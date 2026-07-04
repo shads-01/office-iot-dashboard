@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "recharts": "^3.9.2",
+    "socket.io-client": "^4.8.3"
+  }
+}
