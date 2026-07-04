@@ -1,17 +1,21 @@
 {
-  "name": "bot",
+  "name": "office-iot-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Discord bot for Office IoT Dashboard — monitors office devices and power usage",
+  "main": "src/bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/bot.js",
+    "dev": "node --watch src/bot.js",
+    "deploy": "node src/deploy-commands.js"
   },
-  "keywords": [],
+  "keywords": ["discord", "iot", "bot"],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google/generative-ai": "^0.24.0",
     "discord.js": "^14.26.4",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "socket.io-client": "^4.8.3"
   }
 }

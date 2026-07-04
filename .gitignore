@@ -3,3 +3,8 @@ node_modules/
 *.db
 dist/
 build/
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
