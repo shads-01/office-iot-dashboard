@@ -10,11 +10,11 @@ services:
       - PORT=4000
     command: npm run dev
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"]
+      test: ["CMD-SHELL", "node -e \"fetch('http://localhost:4000/api/health').then(r => r.ok ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))\""]
       interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
 
   frontend:
     build: ./frontend
@@ -23,6 +23,8 @@ services:
     volumes:
       - ./frontend:/app
       - /app/node_modules
+    environment:
+      - VITE_BACKEND_URL=http://backend:4000
     depends_on:
       backend:
         condition: service_healthy

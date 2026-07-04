@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="600" viewBox="0 0 1000 600">
+  <style>
+    .bg { fill: #0f172a; }
+    .node { rx: 8px; stroke-width: 1.5; }
+    .dec { stroke-width: 1.5; }
+    .text-title { font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; fill: #ffffff; text-anchor: middle; }
+    .text-body { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; fill: #94a3b8; text-anchor: middle; }
+    .text-link { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 700; fill: #38bdf8; text-anchor: middle; }
+    .line { stroke: #475569; stroke-width: 2; fill: none; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1000" height="600" class="bg" />
+
+  <!-- Diagram Title -->
+  <text x="50" y="50" font-family="Outfit" font-size="20" font-weight="800" fill="#ffffff">Alert Engine Logic Flowchart</text>
+  <text x="50" y="75" font-family="Plus Jakarta Sans" font-size="12" fill="#64748b">Member 1 Component Design — Checks run on every tick (5s)</text>
+
+  <!-- Start Node -->
+  <g transform="translate(400, 50)">
+    <rect width="200" height="50" class="node" fill="#1e293b" stroke="#64748b" />
+    <text x="100" y="30" class="text-title">Simulator Tick Event</text>
+  </g>
+
+  <!-- Line from Start to Decision 1 -->
+  <path d="M 500 100 L 500 130" class="line" marker-end="url(#arrow)" />
+
+  <!-- Decision 1: Is it Outside Office Hours (9am-5pm)? -->
+  <g transform="translate(375, 130)">
+    <polygon points="125,0 250,50 125,100 0,50" class="dec" fill="#1e293b" stroke="#fbbf24" />
+    <text x="125" y="48" class="text-title" font-size="12">Outside Office Hours?</text>
+    <text x="125" y="65" class="text-body" font-size="9">Hour &lt; 9 AM OR &gt;= 5 PM</text>
+  </g>
+
+  <!-- Yes branch from Decision 1 -->
+  <path d="M 500 230 L 500 260" class="line" marker-end="url(#arrow)" />
+  <text x="520" y="248" class="text-link" fill="#f59e0b">YES</text>
+
+  <!-- Decision 1b: Are any devices ON? -->
+  <g transform="translate(375, 260)">
+    <polygon points="125,0 250,50 125,100 0,50" class="dec" fill="#1e293b" stroke="#fbbf24" />
+    <text x="125" y="48" class="text-title" font-size="12">Are any devices ON?</text>
+    <text x="125" y="65" class="text-body" font-size="9">status === 'on'</text>
+  </g>
+
+  <!-- Yes branch from Decision 1b -->
+  <path d="M 500 360 L 500 390" class="line" marker-end="url(#arrow)" />
+  <text x="520" y="378" class="text-link" fill="#f59e0b">YES</text>
+
+  <!-- Action: Trigger After-Hours Alert (Amber) -->
+  <g transform="translate(400, 390)">
+    <rect width="200" height="50" class="node" fill="#78350f" stroke="#fbbf24" />
+    <text x="100" y="25" class="text-title" fill="#fef3c7">After-Hours Warning</text>
+    <text x="100" y="42" class="text-body" fill="#fde68a" font-size="10">Severity: Amber</text>
+  </g>
+
+  <!-- No branch from Decision 1 to Decision 2 -->
+  <path d="M 625 180 L 750 180 L 750 260" class="line" marker-end="url(#arrow)" />
+  <text x="680" y="170" class="text-link" fill="#94a3b8">NO</text>
+
+  <!-- No branch from Decision 1b to Decision 2 -->
+  <path d="M 625 310 L 750 310 L 750 360" class="line" />
+  <text x="680" y="300" class="text-link" fill="#94a3b8">NO</text>
+
+  <!-- Line connecting Action 1 to Cooldown -->
+  <path d="M 500 440 L 500 470" class="line" />
+
+  <!-- Decision 2 (Parallel branch): Has any device been ON for 2+ hours? -->
+  <g transform="translate(75, 130)">
+    <polygon points="125,0 250,50 125,100 0,50" class="dec" fill="#1e293b" stroke="#ef4444" />
+    <text x="125" y="48" class="text-title" font-size="12">Active for 2+ Hours?</text>
+    <text x="125" y="65" class="text-body" font-size="9">Continuous ON state</text>
+  </g>
+
+  <!-- Decision 2 line from Start -->
+  <path d="M 400 75 L 200 75 L 200 130" class="line" marker-end="url(#arrow)" />
+
+  <!-- Yes branch from Decision 2 -->
+  <path d="M 200 230 L 200 390" class="line" marker-end="url(#arrow)" />
+  <text x="220" y="248" class="text-link" fill="#ef4444">YES</text>
+
+  <!-- Action: Trigger Prolonged-Use Alert (Red) -->
+  <g transform="translate(100, 390)">
+    <rect width="200" height="50" class="node" fill="#7f1d1d" stroke="#ef4444" />
+    <text x="100" y="25" class="text-title" fill="#fee2e2">Prolonged Use Warning</text>
+    <text x="100" y="42" class="text-body" fill="#fecaca" font-size="10">Severity: Red</text>
+  </g>
+
+  <!-- No branch from Decision 2 -->
+  <path d="M 200 230 L 200 320 L 750 320 L 750 360" class="line" />
+  <text x="170" y="248" class="text-link" fill="#94a3b8">NO</text>
+
+  <!-- Decision 2 to Cooldown check line -->
+  <path d="M 200 440 L 200 470 L 375 470" class="line" />
+
+  <!-- Decision 3: Cooldown/Deduplication Check -->
+  <g transform="translate(375, 420)">
+    <polygon points="125,0 250,50 125,100 0,50" class="dec" fill="#1e293b" stroke="#38bdf8" />
+    <text x="125" y="48" class="text-title" font-size="11">Sent in last 30 mins?</text>
+    <text x="125" y="65" class="text-body" font-size="9">Deduplication filter</text>
+  </g>
+
+  <!-- Yes branch from Decision 3 (Suppress/Deduplicate) -->
+  <path d="M 625 470 L 700 470" class="line" marker-end="url(#arrow)" />
+  <text x="660" y="460" class="text-link" fill="#ef4444">YES</text>
+
+  <!-- Action: Suppress/Deduplicate -->
+  <g transform="translate(700, 445)">
+    <rect width="180" height="50" class="node" fill="#0f172a" stroke="#475569" />
+    <text x="90" y="25" class="text-title" font-size="12" fill="#94a3b8">Suppress Alert</text>
+    <text x="90" y="40" class="text-body" font-size="9">Cooldown active</text>
+  </g>
+
+  <!-- No branch from Decision 3 (Publish alert) -->
+  <path d="M 500 520 L 500 540" class="line" marker-end="url(#arrow)" />
+  <text x="520" y="528" class="text-link" fill="#22c55e">NO</text>
+
+  <!-- Final Action: Write SQLite Log & Emit Event -->
+  <g transform="translate(350, 540)">
+    <rect width="300" height="50" class="node" fill="#064e3b" stroke="#10b981" />
+    <text x="150" y="22" class="text-title" fill="#ecfdf5">Publish &amp; Persist Alert</text>
+    <text x="150" y="38" class="text-body" fill="#a7f3d0" font-size="9">Write to SQLite + Socket emit ('alert:new')</text>
+  </g>
+
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="#475569" />
+    </marker>
+  </defs>
+</svg>

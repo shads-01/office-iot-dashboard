@@ -147,6 +147,7 @@ function getDevicesByRoom(devices, roomId) {
 /**
  * Get a single device by ID.
  */
+// eslint-disable-next-line no-unused-vars
 function getDeviceById(devices, deviceId) {
   return devices.find((d) => d.id === deviceId);
 }
