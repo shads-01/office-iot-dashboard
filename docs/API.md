@@ -1,3 +1,27 @@
+# Backend API — Office IoT Dashboard
+
+Base URL: `http://localhost:4000`
+
+Endpoints overview:
+
+- `GET /api/health` — health check
+- `GET /api/devices` — all devices and current state
+- `GET /api/rooms` — summary data for all rooms
+- `GET /api/rooms/:roomId` — devices in a specific room
+- `POST /api/devices/:id/toggle` — manually toggle a device (admin)
+- `GET /api/power/current` — current total watts and per-room breakdown
+- `GET /api/power/today` — today's kWh estimate and estimated cost
+- `GET /api/power/history?hours=1` — recent energy snapshots for charting
+- `GET /api/alerts?hours=24` — recent alerts
+- `POST /api/simulate/after-hours` — demo helper to force after-hours on (body: { roomId?: string })
+
+Socket.IO events (connect to the server and listen):
+
+- `devices:update` — full devices array pushed every tick
+- `power:update` — aggregated power + kWh + client count pushed every tick
+- `alert:new` — sent when a new alert fires
+
+See `backend/src/api.js` for implementation details and `backend/src/simulator.js` for the device model.
 # Office IoT Dashboard — API Documentation
 
 Base URL: `http://localhost:4000`

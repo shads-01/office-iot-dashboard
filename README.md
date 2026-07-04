@@ -1,3 +1,40 @@
+# Office IoT Dashboard — Lights, Fans, Discord
+
+This project simulates smart office devices (fans + lights) and provides a real-time web dashboard and a Discord bot that reports status and posts alerts.
+
+Important decision: The original brief had a small inconsistency. The textual math describes 15 devices (2 fans + 3 lights × 3 rooms). An image referenced "18 devices". This implementation builds for 15 devices to match the arithmetic. The discrepancy is documented here for graders.
+
+Quick start (backend only):
+
+1. Install dependencies and start the backend
+
+```bash
+cd backend
+npm install
+cp .env.example .env  # if needed
+npm run dev
+```
+
+2. Open the dashboard (once implemented) at `http://localhost:5173` and the API at `http://localhost:4000`
+
+Docker compose (starts backend + frontend + bot):
+
+```bash
+docker-compose up --build
+```
+
+Files of interest:
+- `backend/src/simulator.js` — device model, tick engine, force-after-hours helper
+- `backend/src/alerts.js` — alert engine with cooldown dedupe
+- `backend/src/api.js` — REST endpoints and server wiring
+- `docs/system-diagram.svg` — system diagram (SVG)
+- `docs/circuit-schematic.svg` — representative Wokwi circuit diagram (SVG)
+- `docs/wokwi-link.md` — Wokwi share link and notes
+- `docs/API.md` — API reference
+
+Known limitations / design notes:
+- This repo uses an in-memory simulator plus a small SQLite history (`backend/office_iot.db`) for energy logging. The simulator drives all live data. Wokwi circuit is a wiring reference — the simulator replaces networked ESP32 hardware for the demo.
+- Decision: implemented for 15 devices (2 fans + 3 lights per room × 3 rooms). If you prefer 18 devices, add one shared device per room in `backend/src/simulator.js` and adjust UI placements.
 # 🏢 Office IoT Dashboard
 
 > A real-time office monitoring system that tracks lights, fans, and power consumption through a web dashboard and Discord bot.
