@@ -1,161 +1,129 @@
-import { ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, Tooltip } from "recharts";
-import { useDeviceData } from "../hooks/useDeviceData";
+/**
+ * PowerMeter — Live power consumption display.
+ * Shows a gauge arc for total wattage, per-room breakdown bars,
+ * and today's energy summary (kWh + estimated cost).
+ */
+export default function PowerMeter({ power }) {
+  const total = power?.total ?? 0;
+  const byRoom = power?.byRoom ?? {};
+  const kwh = power?.kwh ?? 0;
+  const estimatedCost = power?.estimatedCost ?? 0;
+  const currency = power?.currency ?? 'BDT';
 
-export default function PowerMeter() {
-  const { power, powerHistory } = useDeviceData();
+  // Max possible watts: 15 devices × 60W (fans are 60W each, worst case)
+  // Actual max: 3 rooms × (2×60 + 3×15) = 3 × 165 = 495W
+  const maxWatts = 495;
+  const percentage = Math.min((total / maxWatts) * 100, 100);
 
-  const currentWatts = power.total || 0;
-  const maxLimit = 1000;
-  const percentage = Math.min(100, Math.round((currentWatts / maxLimit) * 100));
+  // SVG arc gauge params
+  const radius = 70;
+  const strokeWidth = 10;
+  const circumference = Math.PI * radius; // half circle
+  const dashOffset = circumference - (percentage / 100) * circumference;
 
-  // Data for the radial half-donut gauge
-  const gaugeData = [
-    { value: currentWatts },
-    { value: Math.max(0, maxLimit - currentWatts) }
-  ];
-
-  // Helper for rooms labels
-  const getRoomName = (roomId) => {
-    if (roomId === "drawingroom") return "Drawing Room";
-    if (roomId === "workroom1") return "Work Room 1";
-    if (roomId === "workroom2") return "Work Room 2";
-    return roomId;
+  // Color based on usage level
+  const getGaugeColor = (pct) => {
+    if (pct < 33) return 'var(--on-color)';
+    if (pct < 66) return 'var(--warning-color)';
+    return 'var(--danger-color)';
   };
 
+  const roomOrder = [
+    { id: 'drawingroom', name: 'Drawing Room', color: 'var(--room-drawing)' },
+    { id: 'workroom1', name: 'Work Room 1', color: 'var(--room-work1)' },
+    { id: 'workroom2', name: 'Work Room 2', color: 'var(--room-work2)' },
+  ];
+
+  // Find max room watts for bar scaling
+  const maxRoomWatts = Math.max(
+    ...roomOrder.map(r => byRoom[r.id]?.watts ?? 0),
+    1
+  );
+
   return (
-    <div className="glass-panel rounded-3xl p-6 shadow-xl flex flex-col h-full min-h-[460px]">
-      <div className="mb-4">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Power & Energy Meter</h2>
-        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Real-time electricity consumption stats.</p>
+    <div className="panel" id="power-meter">
+      <div className="panel-header">
+        <span className="panel-title">
+          <span className="panel-title-icon">⚡</span>
+          Power Consumption
+        </span>
+        <span className="panel-badge" style={{
+          background: percentage > 66 ? 'var(--danger-bg)' : 'var(--on-bg)',
+          color: percentage > 66 ? 'var(--danger-color)' : 'var(--on-color)',
+        }}>
+          LIVE
+        </span>
       </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-        {/* Left Column: Big Stats & Gauge */}
-        <div className="flex flex-col justify-between border border-gray-100 dark:border-gray-800/60 rounded-2xl p-4 bg-white/40 dark:bg-gray-900/10">
-          <div className="flex justify-between items-start">
-            {/* Numeric Indicators */}
-            <div>
-              <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block">CURRENT DRAW</span>
-              <span className="text-4xl font-extrabold text-gray-900 dark:text-white mt-1 block">
-                {currentWatts}<span className="text-lg font-medium text-gray-400 ml-1">W</span>
-              </span>
-            </div>
-            
-            <div className="text-right">
-              <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider block">ESTIMATED COST (TODAY)</span>
-              <span className="text-2xl font-bold text-amber-500 mt-1 block">
-                ৳{power.estimatedCost ? power.estimatedCost.toFixed(2) : "0.00"}
-              </span>
-              <span className="text-[10px] text-gray-400 dark:text-gray-500">
-                {power.kwh ? power.kwh.toFixed(4) : "0.0000"} kWh @ ৳8.0
-              </span>
-            </div>
-          </div>
-
-          {/* Half-Pie Gauge */}
-          <div className="relative h-36 flex items-center justify-center overflow-hidden">
-            <ResponsiveContainer width="100%" height={150}>
-              <PieChart>
-                <Pie
-                  data={gaugeData}
-                  cx="5/6"
-                  cy="120"
-                  startAngle={180}
-                  endAngle={0}
-                  innerRadius={68}
-                  outerRadius={88}
-                  paddingAngle={0}
-                  dataKey="value"
-                >
-                  <Cell fill="url(#gaugeGradient)" />
-                  <Cell className="fill-gray-200 dark:fill-gray-800" />
-                </Pie>
-                <defs>
-                  <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="0">
-                    <stop offset="0%" stopColor="#10b981" /> {/* Emerald */}
-                    <stop offset="60%" stopColor="#f59e0b" /> {/* Amber */}
-                    <stop offset="100%" stopColor="#ef4444" /> {/* Red */}
-                  </linearGradient>
-                </defs>
-              </PieChart>
-            </ResponsiveContainer>
-            
-            {/* Gauge Label Overlay */}
-            <div className="absolute bottom-4 flex flex-col items-center">
-              <span className="text-2xl font-extrabold text-gray-800 dark:text-gray-100">{percentage}%</span>
-              <span className="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mt-0.5">OF 1000W LIMIT</span>
-            </div>
-          </div>
-
-          {/* Per-Room Breakdown */}
-          <div className="grid grid-cols-3 gap-2 border-t border-gray-100 dark:border-gray-800/80 pt-3.5">
-            {Object.keys(power.byRoom || {}).map(roomId => {
-              const roomPower = power.byRoom[roomId];
-              let colorClasses = "text-teal-500 bg-teal-500/5 dark:bg-teal-500/10";
-              if (roomId === "workroom1") colorClasses = "text-indigo-500 bg-indigo-500/5 dark:bg-indigo-500/10";
-              if (roomId === "workroom2") colorClasses = "text-violet-500 bg-violet-500/5 dark:bg-violet-500/10";
-
-              return (
-                <div key={roomId} className={`p-2 rounded-xl text-center ${colorClasses}`}>
-                  <span className="text-[9px] font-bold uppercase tracking-wider block opacity-70">
-                    {getRoomName(roomId).replace(" Room", "")}
-                  </span>
-                  <span className="text-sm font-extrabold block mt-0.5">
-                    {roomPower.watts}W
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+      <div className="power-meter-body">
+        {/* Gauge */}
+        <div className="power-gauge">
+          <svg width="180" height="100" viewBox="0 0 180 100">
+            {/* Background arc */}
+            <path
+              d="M 20 90 A 70 70 0 0 1 160 90"
+              className="gauge-bg"
+            />
+            {/* Filled arc */}
+            <path
+              d="M 20 90 A 70 70 0 0 1 160 90"
+              className="gauge-fill"
+              stroke={getGaugeColor(percentage)}
+              strokeDasharray={circumference}
+              strokeDashoffset={dashOffset}
+            />
+            {/* Center text */}
+            <text x="90" y="72" className="gauge-text" fontSize="28">
+              {total}
+            </text>
+            <text x="90" y="92" className="gauge-label">
+              WATTS
+            </text>
+          </svg>
         </div>
 
-        {/* Right Column: Historical Area Chart */}
-        <div className="flex flex-col border border-gray-100 dark:border-gray-800/60 rounded-2xl p-4 bg-white/40 dark:bg-gray-900/10 h-full min-h-[220px]">
-          <span className="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">Live Consumption History (Watts)</span>
-          <div className="flex-1 min-h-[160px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={powerHistory} margin={{ top: 5, right: 5, left: -25, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorWatts" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.25}/>
-                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
-                <XAxis 
-                  dataKey="time" 
-                  stroke="#9ca3af" 
-                  fontSize={8} 
-                  tickLine={false} 
-                  axisLine={false}
-                />
-                <YAxis 
-                  stroke="#9ca3af" 
-                  fontSize={8} 
-                  tickLine={false} 
-                  axisLine={false}
-                  domain={[0, 450]}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(31, 41, 55, 0.95)', 
-                    borderRadius: '8px', 
-                    border: 'none',
-                    fontSize: '11px',
-                    color: '#fff'
-                  }}
-                  itemStyle={{ color: '#fbbf24' }}
-                />
-                <Area 
-                  type="monotone" 
-                  dataKey="watts" 
-                  stroke="#f59e0b" 
-                  strokeWidth={2}
-                  fillOpacity={1} 
-                  fill="url(#colorWatts)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
+        {/* Per-room breakdown */}
+        <div className="room-power-list">
+          {roomOrder.map(room => {
+            const data = byRoom[room.id];
+            const watts = data?.watts ?? 0;
+            const onCount = data?.onCount ?? 0;
+            const totalCount = data?.totalCount ?? 0;
+            const barPct = maxRoomWatts > 0 ? (watts / maxRoomWatts) * 100 : 0;
+
+            return (
+              <div className="room-power-row" key={room.id}>
+                <div className="room-power-header">
+                  <span className="room-power-name">
+                    <span style={{
+                      width: 8, height: 8, borderRadius: '50%',
+                      background: room.color, display: 'inline-block'
+                    }} />
+                    {room.name}
+                    <span style={{ color: 'var(--text-muted)', fontSize: 10 }}>
+                      ({onCount}/{totalCount})
+                    </span>
+                  </span>
+                  <span className="room-power-value">{watts}W</span>
+                </div>
+                <div className="room-power-bar-track">
+                  <div
+                    className="room-power-bar-fill"
+                    style={{ width: `${barPct}%`, background: room.color }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Energy summary */}
+        <div className="energy-row">
+          <span className="energy-label">Today's Energy</span>
+          <span className="energy-value">{kwh.toFixed(4)} kWh</span>
+        </div>
+        <div className="energy-row">
+          <span className="energy-label">Est. Cost</span>
+          <span className="energy-value">৳{estimatedCost.toFixed(2)} {currency}</span>
         </div>
       </div>
     </div>

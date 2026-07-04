@@ -1,105 +1,236 @@
-@import "tailwindcss";
+/* ================================================================
+   OFFICE IOT DASHBOARD — DESIGN SYSTEM
+   ================================================================
+   CSS custom properties for light/dark themes, typography,
+   spacing tokens, and global animation keyframes.
+   ================================================================ */
 
-/* Typography Settings */
-:root {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Outfit', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+/* ─── Theme: Dark (default) ─────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  /* Surface colors */
+  --bg-primary: #0f1219;
+  --bg-secondary: #161b26;
+  --bg-card: #1a2030;
+  --bg-card-hover: #1f2740;
+  --bg-elevated: #222b3d;
+  --bg-input: #141924;
+
+  /* Glass effect */
+  --glass-bg: rgba(26, 32, 48, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* Text */
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b95a8;
+  --text-muted: #5a6478;
+  --text-heading: #f0f4fc;
+
+  /* Accent — teal/cyan inspired */
+  --accent: #22d3a7;
+  --accent-soft: rgba(34, 211, 167, 0.12);
+  --accent-border: rgba(34, 211, 167, 0.3);
+  --accent-glow: 0 0 20px rgba(34, 211, 167, 0.2);
+
+  /* Status colors */
+  --on-color: #22d3a7;
+  --on-bg: rgba(34, 211, 167, 0.1);
+  --on-border: rgba(34, 211, 167, 0.25);
+  --off-color: #5a6478;
+  --off-bg: rgba(90, 100, 120, 0.08);
+  --off-border: rgba(90, 100, 120, 0.15);
+
+  /* Semantic */
+  --warning-color: #f5a623;
+  --warning-bg: rgba(245, 166, 35, 0.1);
+  --warning-border: rgba(245, 166, 35, 0.25);
+  --danger-color: #ef5350;
+  --danger-bg: rgba(239, 83, 80, 0.1);
+  --danger-border: rgba(239, 83, 80, 0.25);
+  --info-color: #42a5f5;
+  --info-bg: rgba(66, 165, 245, 0.1);
+
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Fan/light specific */
+  --light-glow: rgba(255, 214, 51, 0.6);
+  --light-glow-lg: rgba(255, 214, 51, 0.25);
+  --fan-color: #42a5f5;
+
+  /* Room colors */
+  --room-drawing: #8b5cf6;
+  --room-work1: #3b82f6;
+  --room-work2: #f59e0b;
+  --room-drawing-bg: rgba(139, 92, 246, 0.1);
+  --room-work1-bg: rgba(59, 130, 246, 0.1);
+  --room-work2-bg: rgba(245, 158, 11, 0.1);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #2a3448;
+  --scrollbar-track: transparent;
+}
+
+/* ─── Theme: Light ──────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #edf0f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f9fc;
+  --bg-elevated: #ffffff;
+  --bg-input: #f0f2f7;
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+
+  --text-primary: #1a2138;
+  --text-secondary: #5a6478;
+  --text-muted: #8b95a8;
+  --text-heading: #0f1219;
+
+  --accent: #0d9e7e;
+  --accent-soft: rgba(13, 158, 126, 0.08);
+  --accent-border: rgba(13, 158, 126, 0.25);
+  --accent-glow: 0 0 20px rgba(13, 158, 126, 0.12);
+
+  --on-color: #0d9e7e;
+  --on-bg: rgba(13, 158, 126, 0.06);
+  --on-border: rgba(13, 158, 126, 0.2);
+  --off-color: #8b95a8;
+  --off-bg: rgba(139, 149, 168, 0.06);
+  --off-border: rgba(139, 149, 168, 0.12);
+
+  --warning-color: #d48806;
+  --warning-bg: rgba(212, 136, 6, 0.06);
+  --warning-border: rgba(212, 136, 6, 0.2);
+  --danger-color: #d32f2f;
+  --danger-bg: rgba(211, 47, 47, 0.06);
+  --danger-border: rgba(211, 47, 47, 0.2);
+  --info-color: #1976d2;
+  --info-bg: rgba(25, 118, 210, 0.06);
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+
+  --light-glow: rgba(255, 193, 7, 0.5);
+  --light-glow-lg: rgba(255, 193, 7, 0.15);
+  --fan-color: #1976d2;
+
+  --room-drawing: #7c3aed;
+  --room-work1: #2563eb;
+  --room-work2: #d97706;
+  --room-drawing-bg: rgba(124, 58, 237, 0.06);
+  --room-work1-bg: rgba(37, 99, 235, 0.06);
+  --room-work2-bg: rgba(217, 119, 6, 0.06);
+
+  --scrollbar-thumb: #cdd2da;
+  --scrollbar-track: transparent;
+}
+
+/* ─── Global Reset & Base ───────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* ─── Typography ────────────────────────────────────────────── */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.3;
 }
 
-/* Fan rotation animation */
-@keyframes spin-fan {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.fan-spin {
-  animation: spin-fan 1.2s linear infinite;
-}
-
-/* Light glow animations */
-.light-glow {
-  box-shadow: 0 0 16px 4px rgba(251, 191, 36, 0.65);
-  background-color: rgba(251, 191, 36, 0.95);
-  border-color: rgba(245, 158, 11, 0.8);
-}
-
-.dark .light-glow {
-  box-shadow: 0 0 20px 6px rgba(251, 191, 36, 0.8);
-  background-color: rgba(253, 224, 71, 0.95);
-  border-color: rgba(251, 191, 36, 0.9);
-}
-
-/* New alert pulse animations */
-@keyframes alert-pulse-amber {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
-    border-color: rgba(245, 158, 11, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 14px 2px rgba(245, 158, 11, 0.4);
-    border-color: rgba(245, 158, 11, 0.9);
-  }
-}
-
-@keyframes alert-pulse-red {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-    border-color: rgba(239, 68, 68, 0.2);
-  }
-  50% {
-    box-shadow: 0 0 14px 2px rgba(239, 68, 68, 0.4);
-    border-color: rgba(239, 68, 68, 0.9);
-  }
-}
-
-.new-alert-amber {
-  animation: alert-pulse-amber 2s ease-in-out infinite;
-}
-
-.new-alert-red {
-  animation: alert-pulse-red 2s ease-in-out infinite;
-}
-
-/* Premium glassmorphism design tokens */
-.glass-panel {
-  background-color: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(229, 231, 235, 0.6);
-}
-
-.dark .glass-panel {
-  background-color: rgba(24, 25, 32, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(55, 65, 81, 0.4);
-}
-
-/* Smooth custom scrollbars */
+/* ─── Scrollbar ─────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--scrollbar-track);
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.3);
-  border-radius: 9999px;
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.5);
+/* ─── Animation Keyframes ───────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes alertPulse {
+  0%, 100% { border-left-color: var(--warning-color); }
+  50% { border-left-color: transparent; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Utility Classes ───────────────────────────────────────── */
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
