@@ -66,8 +66,8 @@ let devices = initializeDevices();
 // In-memory alert store (recent alerts, also backed by SQLite)
 let recentAlerts = [];
 
-// Electricity cost rate (BDT per kWh — Bangladesh average)
-const ELECTRICITY_RATE_BDT = 8.0;
+// Electricity cost rate imported from config
+const { ELECTRICITY_RATE_BDT } = require("./config");
 
 console.log(`[Server] Initialized ${devices.length} devices across ${ROOMS.length} rooms`);
 

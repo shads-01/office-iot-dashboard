@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <!-- Styles -->
+  <style>
+    .bg { fill: #0f172a; }
+    .card { rx: 12px; stroke-width: 1.5; }
+    .text-title { font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; fill: #ffffff; }
+    .text-body { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 12px; fill: #94a3b8; }
+    .text-owner { font-family: 'Outfit', sans-serif; font-size: 10px; font-weight: 800; fill: #fb7185; letter-spacing: 0.05em; }
+    .text-flow { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; font-weight: 600; fill: #38bdf8; text-anchor: middle; }
+    .arrow { stroke: #475569; stroke-width: 2; fill: none; stroke-dasharray: 4 2; }
+    .arrow-solid { stroke: #64748b; stroke-width: 2; fill: none; }
+    .legend-text { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 11px; fill: #cbd5e1; }
+  </style>
+
+  <!-- Background -->
+  <rect width="1200" height="750" class="bg" />
+
+  <!-- Diagram Title -->
+  <text x="50" y="50" font-family="Outfit" font-size="24" font-weight="800" fill="#ffffff">Office IoT Dashboard System Architecture</text>
+  <text x="50" y="75" font-family="Plus Jakarta Sans" font-size="13" fill="#64748b">End-to-End Architecture &amp; Data Flow — Team Handoff Diagram</text>
+
+  <!-- 1. Simulated Devices Layer (Left) -->
+  <g transform="translate(50, 120)">
+    <rect width="240" height="380" class="card" fill="#1e293b" stroke="#0d9488" />
+    <text x="20" y="35" class="text-title">Simulated Devices (15)</text>
+    <text x="20" y="55" class="text-owner">OWNER: MEMBER 1</text>
+    
+    <!-- Drawing room -->
+    <rect x="15" y="80" width="210" height="80" rx="8" fill="#0f172a" stroke="#14b8a6" stroke-opacity="0.3" />
+    <text x="25" y="105" class="text-title" font-size="13">Drawing Room</text>
+    <text x="25" y="125" class="text-body" font-size="11">2 Fans (60W) + 3 Lights (15W)</text>
+    <text x="25" y="145" class="text-body" font-size="11">IDs: drawingroom-fan-1..3</text>
+
+    <!-- Work room 1 -->
+    <rect x="15" y="175" width="210" height="80" rx="8" fill="#0f172a" stroke="#14b8a6" stroke-opacity="0.3" />
+    <text x="25" y="200" class="text-title" font-size="13">Work Room 1</text>
+    <text x="25" y="220" class="text-body" font-size="11">2 Fans (60W) + 3 Lights (15W)</text>
+    <text x="25" y="240" class="text-body" font-size="11">IDs: workroom1-fan-1..3</text>
+
+    <!-- Work room 2 -->
+    <rect x="15" y="270" width="210" height="85" rx="8" fill="#0f172a" stroke="#14b8a6" stroke-opacity="0.3" />
+    <text x="25" y="295" class="text-title" font-size="13">Work Room 2</text>
+    <text x="25" y="315" class="text-body" font-size="11">2 Fans (60W) + 3 Lights (15W)</text>
+    <text x="25" y="335" class="text-body" font-size="11">IDs: workroom2-fan-1..3</text>
+  </g>
+
+  <!-- 2. Device Simulator Layer -->
+  <g transform="translate(340, 120)">
+    <rect width="240" height="380" class="card" fill="#1e293b" stroke="#d97706" />
+    <text x="20" y="35" class="text-title">Device Simulator</text>
+    <text x="20" y="55" class="text-owner">OWNER: MEMBER 1</text>
+
+    <rect x="15" y="80" width="210" height="80" rx="8" fill="#0f172a" stroke="#e11d48" stroke-opacity="0.4" />
+    <text x="25" y="105" class="text-title" font-size="13">Tick Engine</text>
+    <text x="25" y="125" class="text-body" font-size="11">Ticks every 5 seconds</text>
+    <text x="25" y="145" class="text-body" font-size="11">8% random toggle probability</text>
+
+    <rect x="15" y="175" width="210" height="80" rx="8" fill="#0f172a" stroke="#e11d48" stroke-opacity="0.4" />
+    <text x="25" y="200" class="text-title" font-size="13">kWh Accumulator</text>
+    <text x="25" y="220" class="text-body" font-size="11">Active loads sum: 0-495W</text>
+    <text x="25" y="240" class="text-body" font-size="11">Formulas: delta Wh / tick</text>
+
+    <rect x="15" y="270" width="210" height="85" rx="8" fill="#0f172a" stroke="#e11d48" stroke-opacity="0.4" />
+    <text x="25" y="295" class="text-title" font-size="13">State Override Helper</text>
+    <text x="25" y="315" class="text-body" font-size="11">Backdates target devices</text>
+    <text x="25" y="335" class="text-body" font-size="11">Simulates 10 PM travel</text>
+  </g>
+
+  <!-- 3. Backend Server (Single Source of Truth) -->
+  <g transform="translate(630, 120)">
+    <rect width="250" height="380" class="card" fill="#1e293b" stroke="#2563eb" />
+    <text x="20" y="35" class="text-title">Backend Server (REST/WS)</text>
+    <text x="20" y="55" class="text-owner">OWNER: MEMBER 2</text>
+
+    <!-- Express API -->
+    <rect x="15" y="80" width="220" height="80" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-opacity="0.3" />
+    <text x="25" y="105" class="text-title" font-size="13">Express REST API</text>
+    <text x="25" y="125" class="text-body" font-size="11">Endpoints: GET /api/devices</text>
+    <text x="25" y="145" class="text-body" font-size="11">POST /api/devices/:id/toggle</text>
+
+    <!-- Socket.IO Server -->
+    <rect x="15" y="175" width="220" height="80" rx="8" fill="#0f172a" stroke="#3b82f6" stroke-opacity="0.3" />
+    <text x="25" y="200" class="text-title" font-size="13">Socket.IO WebSockets</text>
+    <text x="25" y="220" class="text-body" font-size="11">Events: devices:update, power:update</text>
+    <text x="25" y="240" class="text-body" font-size="11">Broadcasting alert:new</text>
+
+    <!-- SQLite database embedded -->
+    <rect x="15" y="270" width="220" height="95" rx="8" fill="#1e1b4b" stroke="#4f46e5" />
+    <text x="25" y="292" class="text-title" font-size="13">SQLite History DB</text>
+    <text x="25" y="309" class="text-owner">DB OWNER: MEMBER 1</text>
+    <text x="25" y="325" class="text-body" font-size="11">File: backend/data/history.db</text>
+    <text x="25" y="342" class="text-body" font-size="11">Tables: device_history, energy_log</text>
+  </g>
+
+  <!-- 4. Consumer Presentation Layer (Right) -->
+  <!-- Web Dashboard -->
+  <g transform="translate(930, 120)">
+    <rect width="220" height="175" class="card" fill="#1e293b" stroke="#7c3aed" />
+    <text x="20" y="30" class="text-title">React Web Dashboard</text>
+    <text x="20" y="50" class="text-owner">OWNER: MEMBER 3</text>
+    <text x="20" y="75" class="text-body">Vite + Tailwind CSS v4</text>
+    <text x="20" y="95" class="text-body">Interactive SVG Floor Plan</text>
+    <text x="20" y="115" class="text-body">Recharts Gauges (scaled 500W)</text>
+    <text x="20" y="135" class="text-body">Session Theme Toggle (D/L)</text>
+  </g>
+
+  <!-- Discord Bot -->
+  <g transform="translate(930, 325)">
+    <rect width="220" height="175" class="card" fill="#1e293b" stroke="#db2777" />
+    <text x="20" y="30" class="text-title">Discord Bot</text>
+    <text x="20" y="50" class="text-owner">OWNER: BOT DEVELOPER</text>
+    <text x="20" y="75" class="text-body">Discord.js v14 Client</text>
+    <text x="20" y="95" class="text-body">Commands: /status, /room, /usage</text>
+    <text x="20" y="115" class="text-body">Gemini AI Natural Responses</text>
+    <text x="20" y="135" class="text-body">Proactive Alert posts to channel</text>
+  </g>
+
+  <!-- 5. Human Monitoring Layer (Bottom) -->
+  <g transform="translate(630, 560)">
+    <rect width="250" height="100" class="card" fill="#0f172a" stroke="#475569" />
+    <text x="20" y="35" class="text-title" font-size="18" fill="#e2e8f0">Boss / Team Members</text>
+    <text x="20" y="60" class="text-body">Monitor workspace state via web browser</text>
+    <text x="20" y="78" class="text-body">Receive push alert warnings via Discord chat</text>
+  </g>
+
+  <!-- Data Flow Arrow Lines -->
+  <!-- 1. Devices to Simulator -->
+  <path d="M 290 310 L 330 310" class="arrow-solid" marker-end="url(#arrow)" />
+  <text x="310" y="300" class="text-flow">States</text>
+
+  <!-- 2. Simulator to Backend -->
+  <path d="M 580 310 L 620 310" class="arrow-solid" marker-end="url(#arrow)" />
+  <text x="600" y="300" class="text-flow">Updates</text>
+
+  <!-- 3. Backend to Dashboard (Socket Pushes & Toggles) -->
+  <!-- WebSockets Push -->
+  <path d="M 880 200 L 920 200" class="arrow" marker-end="url(#arrow)" />
+  <text x="900" y="190" class="text-flow">WebSocket Push</text>
+
+  <!-- REST HTTP Toggle (Bidirectional) -->
+  <path d="M 920 230 L 880 230" class="arrow-solid" marker-end="url(#arrow-reverse)" />
+  <text x="900" y="250" class="text-flow" fill="#38bdf8">REST POST</text>
+
+  <!-- 4. Backend to Discord Bot (REST Poll & Pushes) -->
+  <path d="M 880 410 L 920 410" class="arrow-solid" marker-end="url(#arrow)" />
+  <text x="900" y="400" class="text-flow">REST/Pushes</text>
+
+  <!-- 5. Dashboard to Human -->
+  <path d="M 1040 295 L 1040 580 L 890 580" class="arrow-solid" marker-end="url(#arrow-reverse)" />
+  <text x="990" y="570" class="text-flow" fill="#a78bfa">Browser UI</text>
+
+  <!-- 6. Discord Bot to Human -->
+  <path d="M 1040 500 L 1040 610 L 890 610" class="arrow-solid" marker-end="url(#arrow-reverse)" />
+  <text x="990" y="630" class="text-flow" fill="#f472b6">Discord UI</text>
+
+  <!-- Defs / Arrow Heads -->
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 z" fill="#64748b" />
+    </marker>
+    <marker id="arrow-reverse" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+      <path d="M6,0 L0,3 L6,6 z" fill="#64748b" />
+    </marker>
+  </defs>
+
+  <!-- Legend & Metadata Block -->
+  <g transform="translate(50, 560)">
+    <!-- Legend Box -->
+    <rect width="360" height="100" rx="8" fill="#1e293b" stroke="#334155" />
+    <text x="20" y="25" class="text-title" font-size="13">Diagram Legend</text>
+    
+    <!-- Legend Items -->
+    <line x1="20" y1="45" x2="60" y2="45" class="arrow-solid" />
+    <text x="70" y="49" class="legend-text">Direct Synchronous Data / Commands (REST/Internal)</text>
+
+    <line x1="20" y1="70" x2="60" y2="70" class="arrow" />
+    <text x="70" y="74" class="legend-text">Real-time WebSocket pushes (Push API / Socket.IO)</text>
+  </g>
+</svg>
