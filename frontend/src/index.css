@@ -1,111 +1,236 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+/* ================================================================
+   OFFICE IOT DASHBOARD — DESIGN SYSTEM
+   ================================================================
+   CSS custom properties for light/dark themes, typography,
+   spacing tokens, and global animation keyframes.
+   ================================================================ */
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+/* ─── Theme: Dark (default) ─────────────────────────────────── */
+:root,
+[data-theme="dark"] {
+  /* Surface colors */
+  --bg-primary: #0f1219;
+  --bg-secondary: #161b26;
+  --bg-card: #1a2030;
+  --bg-card-hover: #1f2740;
+  --bg-elevated: #222b3d;
+  --bg-input: #141924;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Glass effect */
+  --glass-bg: rgba(26, 32, 48, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  /* Text */
+  --text-primary: #e8ecf4;
+  --text-secondary: #8b95a8;
+  --text-muted: #5a6478;
+  --text-heading: #f0f4fc;
+
+  /* Accent — teal/cyan inspired */
+  --accent: #22d3a7;
+  --accent-soft: rgba(34, 211, 167, 0.12);
+  --accent-border: rgba(34, 211, 167, 0.3);
+  --accent-glow: 0 0 20px rgba(34, 211, 167, 0.2);
+
+  /* Status colors */
+  --on-color: #22d3a7;
+  --on-bg: rgba(34, 211, 167, 0.1);
+  --on-border: rgba(34, 211, 167, 0.25);
+  --off-color: #5a6478;
+  --off-bg: rgba(90, 100, 120, 0.08);
+  --off-border: rgba(90, 100, 120, 0.15);
+
+  /* Semantic */
+  --warning-color: #f5a623;
+  --warning-bg: rgba(245, 166, 35, 0.1);
+  --warning-border: rgba(245, 166, 35, 0.25);
+  --danger-color: #ef5350;
+  --danger-bg: rgba(239, 83, 80, 0.1);
+  --danger-border: rgba(239, 83, 80, 0.25);
+  --info-color: #42a5f5;
+  --info-bg: rgba(66, 165, 245, 0.1);
+
+  /* Borders */
+  --border-color: rgba(255, 255, 255, 0.06);
+  --border-subtle: rgba(255, 255, 255, 0.03);
+
+  /* Fan/light specific */
+  --light-glow: rgba(255, 214, 51, 0.6);
+  --light-glow-lg: rgba(255, 214, 51, 0.25);
+  --fan-color: #42a5f5;
+
+  /* Room colors */
+  --room-drawing: #8b5cf6;
+  --room-work1: #3b82f6;
+  --room-work2: #f59e0b;
+  --room-drawing-bg: rgba(139, 92, 246, 0.1);
+  --room-work1-bg: rgba(59, 130, 246, 0.1);
+  --room-work2-bg: rgba(245, 158, 11, 0.1);
+
+  /* Scrollbar */
+  --scrollbar-thumb: #2a3448;
+  --scrollbar-track: transparent;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
+/* ─── Theme: Light ──────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #edf0f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f9fc;
+  --bg-elevated: #ffffff;
+  --bg-input: #f0f2f7;
 
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+
+  --text-primary: #1a2138;
+  --text-secondary: #5a6478;
+  --text-muted: #8b95a8;
+  --text-heading: #0f1219;
+
+  --accent: #0d9e7e;
+  --accent-soft: rgba(13, 158, 126, 0.08);
+  --accent-border: rgba(13, 158, 126, 0.25);
+  --accent-glow: 0 0 20px rgba(13, 158, 126, 0.12);
+
+  --on-color: #0d9e7e;
+  --on-bg: rgba(13, 158, 126, 0.06);
+  --on-border: rgba(13, 158, 126, 0.2);
+  --off-color: #8b95a8;
+  --off-bg: rgba(139, 149, 168, 0.06);
+  --off-border: rgba(139, 149, 168, 0.12);
+
+  --warning-color: #d48806;
+  --warning-bg: rgba(212, 136, 6, 0.06);
+  --warning-border: rgba(212, 136, 6, 0.2);
+  --danger-color: #d32f2f;
+  --danger-bg: rgba(211, 47, 47, 0.06);
+  --danger-border: rgba(211, 47, 47, 0.2);
+  --info-color: #1976d2;
+  --info-bg: rgba(25, 118, 210, 0.06);
+
+  --border-color: rgba(0, 0, 0, 0.08);
+  --border-subtle: rgba(0, 0, 0, 0.04);
+
+  --light-glow: rgba(255, 193, 7, 0.5);
+  --light-glow-lg: rgba(255, 193, 7, 0.15);
+  --fan-color: #1976d2;
+
+  --room-drawing: #7c3aed;
+  --room-work1: #2563eb;
+  --room-work2: #d97706;
+  --room-drawing-bg: rgba(124, 58, 237, 0.06);
+  --room-work1-bg: rgba(37, 99, 235, 0.06);
+  --room-work2-bg: rgba(217, 119, 6, 0.06);
+
+  --scrollbar-thumb: #cdd2da;
+  --scrollbar-track: transparent;
+}
+
+/* ─── Global Reset & Base ───────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body {
-  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  min-height: 100vh;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+/* ─── Typography ────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  color: var(--text-heading);
+  line-height: 1.3;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
 }
-p {
-  margin: 0;
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ─── Animation Keyframes ───────────────────────────────────── */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(12px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes alertPulse {
+  0%, 100% { border-left-color: var(--warning-color); }
+  50% { border-left-color: transparent; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ─── Utility Classes ───────────────────────────────────────── */
+.mono {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
