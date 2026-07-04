@@ -344,11 +344,17 @@ office-iot-dashboard/
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── FloorPlan.jsx
-│   │   │   ├── DevicePanel.jsx
-│   │   │   ├── PowerMeter.jsx
-│   │   │   └── AlertsPanel.jsx
-│   │   └── App.jsx
+│   │   │   ├── FloorPlan.jsx      # Interactive SVG office top-view with animated devices
+│   │   │   ├── DevicePanel.jsx    # Live device list with room tabs + toggle
+│   │   │   ├── PowerMeter.jsx     # Total watts, per-room bars, kWh + BDT cost
+│   │   │   └── AlertsPanel.jsx    # Real-time alert feed (after-hours, prolonged-use)
+│   │   ├── hooks/
+│   │   │   └── useSocket.js       # Socket.IO connection + REST initial fetch hook
+│   │   ├── App.jsx                # Dashboard shell (header, grid, footer)
+│   │   ├── App.css                # Dashboard layout + component styles
+│   │   └── index.css              # Dark theme design system
+│   ├── index.html                 # SEO-optimized entry with Inter font
+│   ├── vite.config.js             # Vite config with API proxy to backend
 │   └── package.json
 ├── bot/
 │   ├── src/
